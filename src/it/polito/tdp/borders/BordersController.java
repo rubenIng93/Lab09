@@ -7,6 +7,7 @@ package it.polito.tdp.borders;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.borders.model.Country;
 import it.polito.tdp.borders.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,12 +33,30 @@ public class BordersController {
 	@FXML
 	void doCalcolaConfini(ActionEvent event) {
 
-		txtResult.setText("Todo!");
+		txtResult.clear();
+		int anno = Integer.parseInt(txtAnno.getText());
+		model.creaGrafo(anno);
+		txtResult.appendText("Numero di componenti connesse: "+model.numeroComponentiConnesse()+"\n");
+		for(Country paese : model.getGrafo().vertexSet()) {
+			if(!model.getConfinanti(paese).isEmpty()) {
+				txtResult.appendText("Paese: "+paese.getNomeCompleto().toUpperCase()+", ecco i suoi confinanti via terra nel "+anno+"\n");
+				txtResult.appendText("Sono in totale: "+model.getGrafo().degreeOf(paese)+"\n");
+				txtResult.appendText(model.getConfinanti(paese)+"\n\n");
+			}
+			
+		}
+		
+		
+		
 	}
 
 	@FXML // This method is called by the FXMLLoader when initialization is complete
 	void initialize() {
 		assert txtAnno != null : "fx:id=\"txtAnno\" was not injected: check your FXML file 'Borders.fxml'.";
 		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Borders.fxml'.";
+	}
+	
+	public void setModel(Model model) {
+		this.model = model;
 	}
 }
