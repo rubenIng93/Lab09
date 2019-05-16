@@ -7,10 +7,12 @@ package it.polito.tdp.borders;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.borders.db.BordersDAO;
 import it.polito.tdp.borders.model.Country;
 import it.polito.tdp.borders.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -30,6 +32,13 @@ public class BordersController {
 	@FXML // fx:id="txtResult"
 	private TextArea txtResult; // Value injected by FXMLLoader
 
+    @FXML
+    private ComboBox<Country> cmbBoxNazioni;
+
+    @FXML
+    private TextArea txtResultVicini;
+
+
 	@FXML
 	void doCalcolaConfini(ActionEvent event) {
 
@@ -45,18 +54,24 @@ public class BordersController {
 			}
 			
 		}
-		
-		
-		
 	}
+	
+	  @FXML
+	    void doTrovaVicini(ActionEvent event) {
+
+	    }
 
 	@FXML // This method is called by the FXMLLoader when initialization is complete
 	void initialize() {
 		assert txtAnno != null : "fx:id=\"txtAnno\" was not injected: check your FXML file 'Borders.fxml'.";
 		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Borders.fxml'.";
+		assert cmbBoxNazioni != null : "fx:id=\"cmbBoxNazioni\" was not injected: check your FXML file 'Borders.fxml'.";
+	    assert txtResultVicini != null : "fx:id=\"txtResultVicini\" was not injected: check your FXML file 'Borders.fxml'.";
+
 	}
 	
 	public void setModel(Model model) {
 		this.model = model;
+		cmbBoxNazioni.getItems().addAll(model.getPaesi());
 	}
 }
