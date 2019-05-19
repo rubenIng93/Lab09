@@ -7,7 +7,6 @@ package it.polito.tdp.borders;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import it.polito.tdp.borders.db.BordersDAO;
 import it.polito.tdp.borders.model.Country;
 import it.polito.tdp.borders.model.Model;
 import javafx.event.ActionEvent;
@@ -15,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+
 
 public class BordersController {
 
@@ -37,6 +38,9 @@ public class BordersController {
 
     @FXML
     private TextArea txtResultVicini;
+    
+    @FXML
+    private HBox hBox2;
 
 
 	@FXML
@@ -54,10 +58,25 @@ public class BordersController {
 			}
 			
 		}
+		txtResultVicini.setDisable(false);
+		hBox2.setDisable(false);
+		
 	}
 	
 	  @FXML
 	    void doTrovaVicini(ActionEvent event) {
+		  
+		  txtResultVicini.clear();
+		  Country selected = cmbBoxNazioni.getValue();
+		  if(selected.equals(null)) {
+			  txtResultVicini.appendText("Nessuna Nazione selezionata");
+			  return;
+		  }
+			  
+		  txtResultVicini.appendText("Dalla Nazione "+selected+" sono raggiungibili i seguenti Stati:\n");
+		  for(Country c : model.trovaVicini(selected)) {
+			 txtResultVicini.appendText(c+"\n");			  
+		  }
 
 	    }
 
@@ -67,11 +86,13 @@ public class BordersController {
 		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Borders.fxml'.";
 		assert cmbBoxNazioni != null : "fx:id=\"cmbBoxNazioni\" was not injected: check your FXML file 'Borders.fxml'.";
 	    assert txtResultVicini != null : "fx:id=\"txtResultVicini\" was not injected: check your FXML file 'Borders.fxml'.";
+        assert hBox2 != null : "fx:id=\"hBox2\" was not injected: check your FXML file 'Borders.fxml'.";
 
 	}
 	
 	public void setModel(Model model) {
 		this.model = model;
 		cmbBoxNazioni.getItems().addAll(model.getPaesi());
+		txtResult.appendText("--Digita un anno per far partire l'applicazione--");
 	}
 }
